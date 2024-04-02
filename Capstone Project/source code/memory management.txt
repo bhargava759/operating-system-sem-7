@@ -1,0 +1,29 @@
+class Memory Manager:
+	def _init_(self, total_memory):
+    	self.total_memory = total_memory
+    	self.free_memory = total_memory
+    	self.allocated_blocks = {}
+	def allocate_memory(self, process_id, size):
+    	if size > self.free_memory:
+        	print("Error: Not enough free memory")
+        	return False
+    	else:
+        	self.allocated_blocks[process_id] = size
+        	self.free_memory -= size
+        	print (f"Memory allocated for process {process_id} - Size: {size}bytes")
+        	return True
+	def deallocate_memory(self, process_id):
+    	if process_id in self.allocated_blocks:
+        	size = self.allocated_blocks[process_id]
+        	del self.allocated_blocks[process_id]
+        	self.free_memory += size
+        	print (f"Memory deallocated for process {process_id}")
+        	return True
+    	else:
+        	print (f"Error: Process {process_id} not found")
+        	return False
+memory_manager = MemoryManager(total_memory=1024)
+memory_manager.allocate_memory(process_id=1, size=200)
+memory_manager.allocate_memory(process_id=2, size=300)
+memory_manager.deallocate_memory(process_id=1)
+memory_manager.allocate_memory(process_id=3, size=500)
